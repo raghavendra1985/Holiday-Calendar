@@ -17,10 +17,16 @@ export class DashboardComponent implements OnInit {
   year;
 
   // add month names in monthInAlphabets Array
-  monthInAlphabets: Array<any> = [  ];
+  monthInAlphabets: Array<any> =  ["January","February","March","April","May","June","July",
+            "August","September","October","November","December"];
 
   // Use month index to get month in monthInAlphabets
   monthIndex = 0;
+
+isLeftMonthDisabled: boolean;
+isRightMonthDisabled: boolean;
+isRightYearDisabled:boolean;
+isLeftYearDisabled:boolean;
 
   // get cities and assign it to cities
   cities: Array<any>;
@@ -34,7 +40,8 @@ export class DashboardComponent implements OnInit {
    * get cities
    */
   ngOnInit() {
-
+    this.year = new Date().getFullYear();
+    this.monthIndex = new Date().getMonth();
   }
 
   /**
@@ -43,8 +50,7 @@ export class DashboardComponent implements OnInit {
    *  if "flag" is 1 which means that user click right arrow key ->
    */
   navigationArrowMonth(flag) {
-
-    
+      return this.monthNavigatorValidation(flag);
   }
 
   /**
@@ -53,7 +59,7 @@ export class DashboardComponent implements OnInit {
    *  if "flag" is 1 which means that user onclick right arrow key ->
    */
   navigationArrowYear(flag) {
- 
+      return this.yearNavigatorValidation(flag);
   }
 
   /**
@@ -61,8 +67,27 @@ export class DashboardComponent implements OnInit {
    * Return true to disable
    * Return false to enable
    */
-  monthNavigatorValidation() {
- 
+  monthNavigatorValidation(flag?) {
+      if(flag) {
+      this.isLeftMonthDisabled = false;
+      this.monthIndex = this.monthIndex + 1;
+     if(this.monthIndex === 12) {
+      this.isRightMonthDisabled = true;
+      return false;
+     } else {
+      return true;
+     }
+   } else {
+     this.isRightMonthDisabled = false;
+     this.monthIndex = this.monthIndex - 1;
+
+    if(this.monthIndex === 1) {
+     this.isLeftMonthDisabled = true;
+     return false;
+    } else {
+     return true;
+   }
+  }
   }
 
   /**
@@ -70,14 +95,35 @@ export class DashboardComponent implements OnInit {
    * return true to disable
    * return false to enable
    */
-  yearNavigatorValidation() {
+  yearNavigatorValidation(flag?) {
+    if(flag) {
+      this.isLeftYearDisabled = false;
+      this.year = this.year + 1;
+     if(this.year === new Date().getFullYear()) {
+      this.isRightYearDisabled = true;
+      return false;
+     } else {
+      return true;
+     }
+   } else {
+     this.isRightYearDisabled = false;
+     this.year = this.year - 1;
 
-   
+    if(this.year === 1900) {
+     this.isLeftYearDisabled = true;
+     return false;
+    } else {
+     return true;
+   }
+  }
+
   }
 
   // Get cities list and assign the response value to cities
   getCities() {
- 
+      this.holidayServiceObj.getCities().subscribe(
+        data => this.cities = data
+      );
   }
 
 

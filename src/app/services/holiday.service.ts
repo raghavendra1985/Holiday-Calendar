@@ -19,7 +19,7 @@ export class HolidayService {
    * Use the URL 'api/cities'
    */
   getCities(): Observable<any> {
-    return null;
+     return this.http.get<any>('api/cities');
   }
 
 
@@ -31,9 +31,9 @@ export class HolidayService {
    * Use the URL 'api/monthly'
    */
   getHolidays(city: string, monthIndex: number, year: number): Observable<any> {
-    return null;
+     return this.http.post<any>('api/monthly',{city_name:city,month:monthIndex, year: year});
   }
 
-  
+
 
 }

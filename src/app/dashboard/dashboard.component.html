@@ -76,8 +76,11 @@
                                 mat-select should contain id as "cityDropDown"
                                 The selected city should be assigned to "selectedCity" variable
                             -->
-                        <mat-select id="cityDropDown" placeholder="Select" >
+                        <mat-select [(ngModel)]="selectedCity" id="cityDropDown" placeholder="Select" >
 
+                            <mat-option  *ngFor="let city of cities"   [value]="city.cityName">
+                                {{city.cityName}}
+                              </mat-option>
 
                         </mat-select>
                     </mat-form-field>
@@ -86,7 +89,6 @@
             </div>
 
         </div>
-
         <app-calendar-view *ngIf='selectedCity' [monthIndex]='monthIndex' [year]='year' [city]='selectedCity'>
         </app-calendar-view>
 

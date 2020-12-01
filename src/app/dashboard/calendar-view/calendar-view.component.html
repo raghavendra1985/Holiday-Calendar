@@ -7,12 +7,17 @@
             1. week
             2. mat-h3
     -->
-   
+    <div class="week mat-h3" *ngFor="let i of weekObj">
+        {{i}}
+    </div>
+
 
 </div>
 
-<div class="calendar-body" *ngIf="dateObj.length>0">
+<div class="calendar-body"  *ngIf="dateObj.length>0" >
     <!--
+
+
     Create a calendar grid
     * The gird should contain 6 rows and 7 column
     * Each row should contain "tr-row" css class
@@ -21,6 +26,7 @@
         * If the cell contains current month date then the cell should have "tdEnabled" css class
         * If the cell contains previous month or next month date then the cell should have "tdDisabled" css class
         * If a cell is selected then add "tdSelected" css class to it.
+
     -->
 
     <!--
@@ -33,10 +39,24 @@
     -->
 
     <!--Structure-->
-  
 
     <!--End-->
 
 
+    <div class="calendar-header tr-row" *ngFor="let i of dateObj">
+        <div class="td-month"  *ngFor="let j of i" 
+        [ngClass]="{'tdEnabled'  : j.date.split('/')[1]-1 === currentMonth }"
+        [ngClass]="{'tdDisabled' : j.date.split('/')[1]-1 !== currentMonth }"
+        >   
+            <span  class="mat-h1">{{j.date.split('/')[0]}}</span>   
 
-</div>
+                <div *ngFor="let obj of getlocalHolidays" >
+
+                    <span class="mat-h3 holidayBox tdEnabled" *ngIf="obj.date === j.date">  {{obj.holidayName}} </span>
+
+                </div>
+            </div>
+    </div>
+
+
+

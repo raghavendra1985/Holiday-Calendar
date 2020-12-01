@@ -23,10 +23,10 @@ export class DashboardComponent implements OnInit {
   // Use month index to get month in monthInAlphabets
   monthIndex = 0;
 
-isLeftMonthDisabled: boolean;
-isRightMonthDisabled: boolean;
-isRightYearDisabled:boolean;
-isLeftYearDisabled:boolean;
+isLeftMonthDisabled: boolean = false;
+isRightMonthDisabled: boolean = false;
+isRightYearDisabled:boolean = false;
+isLeftYearDisabled:boolean = false;
 
   // get cities and assign it to cities
   cities: Array<any>;
@@ -41,7 +41,9 @@ isLeftYearDisabled:boolean;
    */
   ngOnInit() {
     this.year = new Date().getFullYear();
+    //this.isRightYearDisabled = true;
     this.monthIndex = new Date().getMonth();
+    this.getCities();
   }
 
   /**
@@ -68,27 +70,29 @@ isLeftYearDisabled:boolean;
    * Return false to enable
    */
   monthNavigatorValidation(flag?) {
-      if(flag) {
-      this.isLeftMonthDisabled = false;
-      this.monthIndex = this.monthIndex + 1;
-     if(this.monthIndex === 12) {
-      this.isRightMonthDisabled = true;
-      return false;
-     } else {
-      return true;
-     }
-   } else {
-     this.isRightMonthDisabled = false;
-     this.monthIndex = this.monthIndex - 1;
 
-    if(this.monthIndex === 1) {
-     this.isLeftMonthDisabled = true;
-     return false;
-    } else {
-     return true;
-   }
-  }
-  }
+    if(flag) {
+      if (this.monthIndex === 11 ){
+        this.monthIndex = 0;
+        this.year = this.year + 1;
+        //this.isRightMonthDisabled = true;
+        return true;
+      }
+      this.monthIndex = this.monthIndex + 1;
+      return true;
+    } 
+    else {
+      this.isRightMonthDisabled = false;
+      this.monthIndex = this.monthIndex - 1;
+
+      if(this.monthIndex === -1) {
+        this.monthIndex = 11;
+        this.year = this.year - 1;
+        return true;
+    }
+      return true;
+    }
+    }
 
   /**
    * To disable navigation for year
@@ -97,26 +101,12 @@ isLeftYearDisabled:boolean;
    */
   yearNavigatorValidation(flag?) {
     if(flag) {
-      this.isLeftYearDisabled = false;
-      this.year = this.year + 1;
-     if(this.year === new Date().getFullYear()) {
-      this.isRightYearDisabled = true;
-      return false;
-     } else {
-      return true;
-     }
-   } else {
-     this.isRightYearDisabled = false;
-     this.year = this.year - 1;
-
-    if(this.year === 1900) {
-     this.isLeftYearDisabled = true;
-     return false;
+        this.year = this.year + 1;
+        return true;
     } else {
-     return true;
-   }
-  }
-
+      this.year = this.year - 1;
+      return true;
+      }
   }
 
   // Get cities list and assign the response value to cities
